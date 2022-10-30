@@ -5,7 +5,7 @@
 
       <!-- Brand -->
       <a class="navbar-brand waves-effect" href="/">
-        <strong class="blue-text">DJe-commerce</strong>
+        <strong class="blue-text">Aplikacja internetowa dla sklepu spożywczego</strong>
       </a>
 
       <!-- Collapse -->
@@ -34,7 +34,7 @@
         <ul class="navbar-nav nav-flex-icons">
           {% if request.user.is_authenticated %}
           <li class="nav-item">
-            <a href="{% url 'core:order-summary' %}" class="nav-link waves-effect">
+            <a href="{% url 'store:cart:cart-summary' %}" class="nav-link waves-effect">
               <span class="badge red z-depth-1 mr-1"> {{ request.user }} </span>
               <i class="fas fa-shopping-cart"></i>
               <span class="clearfix d-none d-sm-inline-block"> Cart </span>
