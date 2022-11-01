@@ -1,3 +1,4 @@
+from distutils.command.upload import upload
 from django.db import models
 
 # Create your models here.
@@ -12,7 +13,7 @@ class Product(models.Model):
     category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
     product_name = models.CharField(max_length = 50)
     product_description = models.CharField(max_length = 400)
-    product_image = models.ImageField(null=True, blank=True)
+    product_image = models.ImageField()
     price = models.IntegerField()
 
     def __str__(self):

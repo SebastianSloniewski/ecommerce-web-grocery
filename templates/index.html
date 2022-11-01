@@ -61,10 +61,10 @@
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
                 <li class="active"><a href="{% static './index.html' %}">Home</a></li>
-                <li><a href="{% static './shop-grid.html' %}">Shop</a></li>
+                <li><a href="{% url 'store:shop-grid' %}">Shop</a></li>
                 <li><a href="#">Pages</a>
                     <ul class="header__menu__dropdown">
-                        <li><a href="{% static './shop-details.html' %}">Shop Details</a></li>
+                        <li><a href="{% url 'store:shop-grid' %}">Shop Details</a></li>
                         <li><a href="{% static './shoping-cart.html' %}">Shoping Cart</a></li>
                         <li><a href="{% static './checkout.html' %}">Check Out</a></li>
                         <li><a href="{% static './blog-details.html' %}">Blog Details</a></li>
@@ -139,10 +139,10 @@
                     <nav class="header__menu">
                         <ul>
                             <li class="active"><a href="{% static './index.html' %}">Home</a></li>
-                            <li><a href="{% static './shop-grid.html' %}">Shop</a></li>
+                            <li><a href="{% url 'store:shop-grid' %}">Shop</a></li>
                             <li><a href="#">Pages</a>
                                 <ul class="header__menu__dropdown">
-                                    <li><a href="{% static './shop-details.html' %}">Shop Details</a></li>
+                                    <li><a href="{% url 'store:shop-grid' %}">Shop Details</a></li>
                                     <li><a href="{% static './shoping-cart.html' %}">Shoping Cart</a></li>
                                     <li><a href="{% static './checkout.html' %}">Check Out</a></li>
                                     <li><a href="{% static './blog-details.html' %}">Blog Details</a></li>
@@ -181,17 +181,9 @@
                             <span>All departments</span>
                         </div>
                         <ul>
-                            <li><a href="#">Fresh Meat</a></li>
-                            <li><a href="#">Vegetables</a></li>
-                            <li><a href="#">Fruit & Nut Gifts</a></li>
-                            <li><a href="#">Fresh Berries</a></li>
-                            <li><a href="#">Ocean Foods</a></li>
-                            <li><a href="#">Butter & Eggs</a></li>
-                            <li><a href="#">Fastfood</a></li>
-                            <li><a href="#">Fresh Onion</a></li>
-                            <li><a href="#">Papayaya & Crisps</a></li>
-                            <li><a href="#">Oatmeal</a></li>
-                            <li><a href="#">Fresh Bananas</a></li>
+                            {% for item in  categories%}
+                                    <li><a href ="{% url 'store:index' %}?category={{ item.id}}"> {{ item.category_name }}</li>
+                            {% endfor %}
                         </ul>
                     </div>
                 </div>
