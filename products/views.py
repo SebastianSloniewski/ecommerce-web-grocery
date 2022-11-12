@@ -1,24 +1,24 @@
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from django.core.paginator import Paginator
 from .models import Category, Product
+from shopping_cart.models import *
+from django.http import HttpResponse
 
+class ProductDetailView(generic.DetailView):
+    model = Product
+    template_name = "shop-details.html"
 
-
-# Create your views here.
-def product_list(request, category=None):
-    if category is None:
-        context = {
-            'items': Product.objects.all(),
-            'categories': Category.objects.all()
+    def get(self, request, *args, **kwargs):
+        product = Product.objects.filter(slug=kwargs['slug']).first()
+        context={
+            'product': product
         }
-    else:
-        context = {
-            'items': Product.objects.filter(category_name=category),
-            'categories': Category.objects.all()
-        }
-    return render(request, "shop-grid.html", context)
+        response = HttpResponse(context)
+        return render(request, self.template_name, context)
+
+
 
 def basic_view(request):
 
@@ -27,7 +27,7 @@ def basic_view(request):
 
     data = {
         'category':request.GET.get('category'),
-        'page_number': request.GET.get('page')
+        'page_number': request.GET.get('page') 
     }
     data = {k: v for k, v in data.items() if v}
     print(data)
@@ -40,8 +40,6 @@ def basic_view(request):
     if "page_number" in data:
         page_obj = paginator.get_page(data['page_number'])
     
-    
-    
     context = {
             'products': products,
             'categories': Category.objects.all(),
@@ -49,3 +47,9 @@ def basic_view(request):
         }
 
     return render(request, "shop-grid.html", context)
+
+
+def add_to_cart(request, slug):
+    item = get_object_or_404(Product, slug=slug)
+    cart_item = Cart_Item.objects.create(product=item)
+    

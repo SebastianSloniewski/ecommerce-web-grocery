@@ -60,6 +60,10 @@
         allowParentLinks: true
     });
 
+
+
+    
+
     /*-----------------------
         Categories Slider
     ------------------------*/
@@ -220,5 +224,13 @@
         }
         $button.parent().find('input').val(newVal);
     });
+
+    var addButton = $('.primary-btn');
+    addButton.on('hover', function(){
+        var input = parseFloat($('.pro-qty').parent().find('input').val());
+        $(this).data(qt) = input;
+    })
+    
+
 
 })(jQuery);
