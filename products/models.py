@@ -20,8 +20,7 @@ class Product(models.Model):
     product_description = models.CharField(max_length = 400)
     product_image = models.ImageField()
     price = models.FloatField()
-    discount = models.IntegerField(blank = True, null = True)
-    slug = models.SlugField(default = product_name)
+    slug = models.SlugField(blank = True, null = True)
 
     def __str__(self):
         return self.product_name
@@ -30,4 +29,13 @@ class Product(models.Model):
         return reverse("store:product-details", kwargs={
             'slug': self.slug
         })
+
+    def get_add_to_cart_url(self):
+        return reverse("store:add-to-cart", kwargs={
+            'slug': self.slug
+        })
     
+    def get_remove_from_cart_url(self):
+        return reverse("store:remove-from-cart", kwargs={
+            'slug': self.slug
+        })
