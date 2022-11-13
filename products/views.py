@@ -77,10 +77,9 @@ def add_to_cart(request, slug):
         return redirect("store:product-details",slug=slug)
 
 
-def remove_from_cart(request,slug):
-    return redirect("store:product-details",slug=slug)
 
-#def remove_from_cart(request, slug):
+def remove_from_cart(request, slug):
+    pass
 #     item = get_object_or_404(Product, slug=slug)
 #     cart_qs = Shopping_Cart.objects.filter(user=request.user, ordered=False)
 #     if cart_qs.exists():
