@@ -231,6 +231,11 @@
         $(this).data(qt) = input;
     })
     
+    var addButton = $('.delete-btn');
+    addButton.on('hover', function(){
+        var input = parseFloat($('.pro-qty').parent().find('input').val());
+        $(this).data(qt) = input;
+    })
 
 
 })(jQuery);

@@ -20,10 +20,15 @@ class Product(models.Model):
     product_description = models.CharField(max_length = 400)
     product_image = models.ImageField()
     price = models.FloatField()
+    discount = models.IntegerField(default=0)
+    discount_price = models.FloatField(default=0) 
     slug = models.SlugField(blank = True, null = True)
 
     def __str__(self):
         return self.product_name
+
+    def save(self, *args, **kwargs):
+        self.discount_price = (self.price * (100 - self.discount) / 100)
 
     def get_absolute_url(self):
         return reverse("store:product-details", kwargs={
