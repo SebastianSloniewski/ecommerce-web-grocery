@@ -231,8 +231,8 @@
                         <h2>Vegetable’s Package</h2>
                         <div class="breadcrumb__option">
                             <a href="./index.html">Home</a>
-                            <a href="./index.html">Vegetables</a>
-                            <span>Vegetable’s Package</span>
+                            <a href ="{% url 'store:shop-grid' %}?category={{ product.category.id }}">{{ product.category }}</a>
+                            <span>{{ product }}</span>
                         </div>
                     </div>
                 </div>
@@ -263,14 +263,10 @@
                                 src="{{ product.product_image.url }}" alt="">
                         </div>
                         <div class="product__details__pic__slider owl-carousel">
-                            <img data-imgbigurl="{% static 'img/product/details/product-details-2.jpg' %}"
-                                src="{% static 'img/product/details/thumb-1.jpg' %}" alt="">
-                            <img data-imgbigurl="{% static 'img/product/details/product-details-3.jpg' %}"
-                                src="{% static 'img/product/details/thumb-2.jpg' %}" alt="">
-                            <img data-imgbigurl="{% static 'img/product/details/product-details-5.jpg' %}"
-                                src="{% static 'img/product/details/thumb-3.jpg' %}" alt="">
-                            <img data-imgbigurl="{% static 'img/product/details/product-details-4.jpg' %}"
-                                src="{% static 'img/product/details/thumb-4.jpg' %}" alt="">
+                            {% for item in items %}
+                            <a href="{{ item.get_absolute_url }}">
+                                <img src="{{ item.product_image.url }}">
+                            {% endfor %}
                         </div>
                     </div>
                 </div>

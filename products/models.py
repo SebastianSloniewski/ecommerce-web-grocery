@@ -15,12 +15,12 @@ class Category(models.Model):
         
 
 class Product(models.Model):
-    category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     product_name = models.CharField(max_length = 50)
     product_description = models.CharField(max_length = 400)
     product_image = models.ImageField()
     price = models.FloatField()
-    discount = models.IntegerField(default=0)
+    discount = models.FloatField(default=0)
     discount_price = models.FloatField(default=0) 
     slug = models.SlugField(blank = True, null = True)
 
@@ -29,6 +29,8 @@ class Product(models.Model):
 
     def save(self, *args, **kwargs):
         self.discount_price = (self.price * (100 - self.discount) / 100)
+        super(Product, self).save(*args, **kwargs) # Call the "real" save() method.
+
 
     def get_absolute_url(self):
         return reverse("store:product-details", kwargs={

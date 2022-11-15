@@ -11,10 +11,14 @@ class ProductDetailView(generic.DetailView):
     model = Product
     template_name = "shop-details.html"
 
+
     def get(self, request, *args, **kwargs):
         product = Product.objects.filter(slug=kwargs['slug']).first()
+        product_category_id = product.category.id
+        category_items = Product.objects.filter(category__id=product_category_id)
         context={
-            'product': product
+            'product': product,
+            'items': category_items
         }
         response = HttpResponse(context)
         return render(request, self.template_name, context)
