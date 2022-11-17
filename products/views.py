@@ -2,10 +2,12 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.views import generic
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .models import Category, Product
 from shopping_cart.models import *
 from django.http import HttpResponse
+import operator
 
 class ProductDetailView(generic.DetailView):
     model = Product
@@ -45,15 +47,16 @@ def shop_view(request):
     if "page_number" in data:
         page_obj = paginator.get_page(data['page_number'])
     
+    
     context = {
             'products': products,
-            'categories': Category.objects.all(),
+            'categories': sorted(Category.objects.all(), key=operator.attrgetter('category_name')),
             'page_items': page_obj
         }
 
     return render(request, "shop-grid.html", context)
 
-
+@login_required
 def add_to_cart(request, slug):
     item = get_object_or_404(Product, slug=slug)
     cart_item, created = Cart_Item.objects.get_or_create(
@@ -81,7 +84,7 @@ def add_to_cart(request, slug):
         return redirect("store:product-details",slug=slug)
 
 
-
+@login_required
 def remove_from_cart(request, slug):
     
     item = get_object_or_404(Product, slug=slug)

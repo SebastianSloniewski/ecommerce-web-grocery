@@ -1,9 +1,14 @@
 from django.conf import settings
 from django.conf.urls.static import static
 
-from django.urls import path, include
-from products.models import Product
-from products.views import shop_view, add_to_cart, remove_from_cart, ProductDetailView
+from django.urls import path
+from products.views import(
+    shop_view, 
+    add_to_cart, 
+    remove_from_cart, 
+    ProductDetailView
+)
+from shopping_cart.views import ShoppingCartSummaryView
 from .views import index_view
 
 app_name = 'store'
@@ -13,6 +18,7 @@ urlpatterns = [
  path('shop-grid/', shop_view ,name='shop-grid'),
  path('product-detail/<slug:slug>/', ProductDetailView.as_view(), name='product-details'),
  path('add-to-cart/<slug:slug>/', add_to_cart, name='add-to-cart'),
- path('remove-from-cart/<slug:slug>/', remove_from_cart, name='remove-from-cart')
+ path('remove-from-cart/<slug:slug>/', remove_from_cart, name='remove-from-cart'),
+ path('cart-summary/', ShoppingCartSummaryView.as_view(), name='cart-summary')
  
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -13,6 +13,9 @@ class Cart_Item(models.Model):
     def __str__(self):
         return f"{self.quantity} of {self.product.product_name}"
 
+    def get_total_item_price(self):
+        return self.quantity * self.product.base_price
+
 class Shopping_Cart(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
     items = models.ManyToManyField(Cart_Item)
@@ -22,7 +25,7 @@ class Shopping_Cart(models.Model):
       return f'{self.user.username}, {"".join(item.product.product_name for item in self.items.all())}' 
 
     def get_total_price(self):
-        return sum([item.product.price * item.quantity for item in self.items.all()])
+        return sum([item.product.base_price * item.quantity for item in self.items.all()])
 
     def get_cart_items(self):
         return self.items.all()
