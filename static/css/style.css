@@ -171,7 +171,6 @@ ol {
 	letter-spacing: 2px;
 }
 
-
 .site-btn {
 	font-size: 14px;
 	color: #ffffff;
@@ -1623,7 +1622,6 @@ ol {
 .product__pagination,
 .blog__pagination {
 	padding-top: 10px;
-	text-align: right;
 }
 
 .product__pagination a,
@@ -1714,12 +1712,6 @@ ol {
 }
 
 .product__details__text .primary-btn {
-	padding: 16px 28px 14px;
-	margin-right: 6px;
-	margin-bottom: 5px;
-}
-
-.product__details__text .danger-btn {
 	padding: 16px 28px 14px;
 	margin-right: 6px;
 	margin-bottom: 5px;
@@ -1985,25 +1977,11 @@ ol {
 	background: #f5f5f5;
 }
 
-.danger-btn.cart-btn {
-	color: #6f6f6f;
-	padding: 14px 30px 12px;
-	background: #f5f5f5;
-}
-
 .primary-btn.cart-btn span {
 	font-size: 14px;
 }
 
-.danger-btn.cart-btn span {
-	font-size: 14px;
-}
-
 .primary-btn.cart-btn.cart-btn-right {
-	float: right;
-}
-
-.danger-btn.cart-btn.cart-btn-right {
 	float: right;
 }
 
@@ -2082,11 +2060,6 @@ ol {
 }
 
 .shoping__checkout .primary-btn {
-	display: block;
-	text-align: center;
-}
-
-.shoping__checkout .danger-btn {
 	display: block;
 	text-align: center;
 }
@@ -2931,7 +2904,7 @@ ol {
 
 @media only screen and (min-width: 1200px) {
 	.container {
-		max-width: 100%;
+		max-width: 1170px;
 	}
 }
 
@@ -2987,9 +2960,6 @@ ol {
 		margin-bottom: 10px;
 	}
 	.product__details__text .primary-btn {
-		margin-bottom: 10px;
-	}
-	.product__details__text .danger-btn {
 		margin-bottom: 10px;
 	}
 	.product__details__tab .nav-tabs:before {
@@ -3470,16 +3440,7 @@ ol {
 		float: none;
 		margin-top: 10px;
 	}
-	.danger-btn.cart-btn.cart-btn-right {
-		float: none;
-		margin-top: 10px;
-	}
 	.shoping__checkout .primary-btn {
-		display: block;
-		text-align: center;
-		padding: 10px 15px 10px;
-	}
-	.shoping__checkout .danger-btn {
 		display: block;
 		text-align: center;
 		padding: 10px 15px 10px;

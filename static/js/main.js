@@ -36,7 +36,7 @@
     --------------------*/
     $('.set-bg').each(function () {
         var bg = $(this).data('setbg');
-        $(this).css({'background-image':'url(' + bg + ')', 'background-size':'contain'});
+        $(this).css('background-image', 'url(' + bg + ')');
     });
 
     //Humberger Menu
@@ -59,10 +59,6 @@
         prependTo: '#mobile-menu-wrap',
         allowParentLinks: true
     });
-
-
-
-    
 
     /*-----------------------
         Categories Slider
@@ -225,21 +221,4 @@
         $button.parent().find('input').val(newVal);
     });
 
-    var addButton = $('.primary-btn');
-    addButton.on('hover', function(){
-        var input = parseFloat($('.pro-qty').parent().find('input').val());
-        $(this).data(qt) = input;
-    })
-    
-    var addButton = $('.delete-btn');
-    addButton.on('hover', function(){
-        var input = parseFloat($('.pro-qty').parent().find('input').val());
-        $(this).data(qt) = input;
-    })
-
-
 })(jQuery);
-
-function setTwoNumberDecimal(el) {
-    el.value = parseFloat(el.value).toFixed(2);
-};
