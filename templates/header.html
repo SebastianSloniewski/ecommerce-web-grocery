@@ -1,0 +1,71 @@
+ 
+ {% load static %}
+ {% load cart_template_tag %}
+ <!-- Header Section Begin -->
+ <header class="header">
+    <div class="header__top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <div class="header__top__left">
+                        <ul>
+                            <li><i class="fa fa-envelope"></i> 249438@student.pwr.edu.pl</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="header__top__right">
+                        <div class="header__top__right">
+                            {% if request.ur.is_authenticated %}
+                                <div class="header__top__right__auth">
+                                    <a href="{% url 'account_login' %}" style="display:inline-block; margin-right: 10px;"><i class="fa fa-user"></i>Profil</a>
+                                    <div class="auth__options">
+                                        <ul>
+                                            <a href="{% url 'account_login' %}"> Profil </a>
+                                            <a href="{% url 'account_logout' %}"> Logout </a>
+                                        </ul>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="header__top__right__auth">
+                                    <a href="{% url 'account_login' %}"><i class="fa fa-user"></i> Login</a>
+                                </div>
+                            {% endif %}
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="header__logo">
+                    <a href={% url 'store:index' %}><img src="{% static 'img/logo.png' %}" alt=""></a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <nav class="header__menu">
+                    <ul>
+                        <li><a href="{% url 'store:index' %}" class="home-btn">Home</a></li>
+                        <li><a href="{% url 'store:shop-grid' %}"class="home-btn">Shop</a></li>
+                        <li><a href="#"class="home-btn">Discount coupons</a></li>
+                        <li><a href="#"class="home-btn">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-3">
+                <div class="header__cart">
+                    <ul>
+                        <li><a href={% url 'store:cart-summary' %}><i class="fa fa-shopping-cart"></i> <span>{{request.user|cart_item_count}}</span></a></li>
+                    </ul>
+                    <div class="header__cart__price">Total: <span>{{ request.user|get_cart|floatformat:2}}zł</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="humberger__open">
+            <i class="fa fa-bars"></i>
+        </div>
+    </div>
+</header>
+<!-- Header Section End -->

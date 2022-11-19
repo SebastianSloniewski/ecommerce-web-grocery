@@ -403,6 +403,13 @@ ol {
 	color: #1c1c1c;
 }
 
+
+.header__top__right__auth ul li:hover .accounts__option {
+	top: 30px;
+	opacity: 1;
+	visibility: visible;
+}
+
 .header__top__right__auth a i {
 	margin-right: 6px;
 }
@@ -1035,7 +1042,7 @@ ol {
 }
 
 /*---------------------
-  
+  Breadcrumb
 -----------------------*/
 
 .breadcrumb-section {

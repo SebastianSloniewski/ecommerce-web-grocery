@@ -1,0 +1,66 @@
+ {% load cart_template_tag %}
+ <!-- Hamburger -->
+ <div class="humberger__menu__overlay"></div>
+ <div class="humberger__menu__wrapper">
+     <div class="humberger__menu__logo">
+         <a href="#"><img src="img/logo.png" alt=""></a>
+     </div>
+     <div class="humberger__menu__cart">
+            <ul>
+                <li><a href={% url 'store:cart-summary' %}><i class="fa fa-shopping-cart"></i> <span>{{request.user|cart_item_count}}</span></a></li>
+            </ul>
+            <div class="header__cart__price">item: <span>{{ request.user|get_cart|floatformat:2}}zł</span></div>
+     </div>
+     <div class="humberger__menu__widget">
+         <div class="header__top__right__language">
+             <img src="img/language.png" alt="">
+             <div>English</div>
+             <span class="arrow_carrot-down"></span>
+             <ul>
+                 <li><a href="#">Spanis</a></li>
+                 <li><a href="#">English</a></li>
+             </ul>
+         </div>
+         {% if request.user.is_authenticated %}
+         <div class="header__top__right__auth">
+             <a href="{% url 'account_login' %}" style="display:inline-block; margin-right: 10px;"><i class="fa fa-user"></i>Profil</a>
+             <div class="auth__options">
+                 <ul>
+                     <a href="{% url 'account_login' %}"> Profil </a>
+                     <a href="{% url 'account_logout' %}"> Logout </a>
+                 </ul>
+             </div>
+         </div>
+     {% else %}
+         <div class="header__top__right__auth">
+             <a href="{% url 'account_login' %}"><i class="fa fa-user"></i> Login</a>
+         </div>
+     {% endif %}
+     </div>
+     <nav class="humberger__menu__nav mobile-menu">
+         <ul>
+            <ul>
+                <li class="active"><a href="{% url 'store:index' %}">Home</a></li>
+                <li><a href="{% url 'store:shop-grid' %}">Shop</a></li>
+                <li><a href="#">Discount coupons</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+         </ul>
+     </nav>
+     <div id="mobile-menu-wrap"><div class="slicknav_menu"><a href="#" aria-haspopup="true" role="button" tabindex="0" class="slicknav_btn slicknav_collapsed"><span class="slicknav_menutxt">MENU</span><span class="slicknav_icon"><span class="slicknav_icon-bar"></span><span class="slicknav_icon-bar"></span><span class="slicknav_icon-bar"></span></span></a><nav class="slicknav_nav slicknav_hidden" style="display: none;" aria-hidden="true" role="menu">
+     </nav></div></div>
+     <div class="header__top__right__social">
+         <a href="#"><i class="fa fa-facebook"></i></a>
+         <a href="#"><i class="fa fa-twitter"></i></a>
+         <a href="#"><i class="fa fa-linkedin"></i></a>
+         <a href="#"><i class="fa fa-pinterest-p"></i></a>
+     </div>
+     <div class="humberger__menu__contact">
+         <ul>
+             <li><i class="fa fa-envelope"></i> 249438@student.pwr.edu.pl</li>
+             <li>PLACEHOLDER</li>
+         </ul>
+     </div>
+ </div>
+
+ <!--Hamburger ends-->

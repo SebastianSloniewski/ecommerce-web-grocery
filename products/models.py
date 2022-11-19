@@ -17,11 +17,11 @@ class Category(models.Model):
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     product_name = models.CharField(max_length = 50)
-    product_description = models.CharField(max_length = 400)
+    product_description = models.CharField(max_length = 400, blank=True)
     product_image = models.ImageField()
     base_price = models.FloatField()
-    discount = models.FloatField(default=0)
-    price = models.FloatField(default = base_price) 
+    discount = models.IntegerField(default=0)
+    price = models.FloatField(default = base_price, blank=True) 
     slug = models.SlugField(blank = True, null = True)
 
     def __str__(self):
@@ -29,6 +29,7 @@ class Product(models.Model):
 
     def save(self, *args, **kwargs):
         self.price = (self.base_price * (100 - self.discount) / 100)
+        self.price = round(self.price,2)
         super(Product, self).save(*args, **kwargs) # Call the "real" save() method.
 
 
