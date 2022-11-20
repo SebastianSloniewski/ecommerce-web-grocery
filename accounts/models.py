@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from cities_light.models import City
 #from shopping_cart.models import Shopping_Cart
 
 
@@ -15,7 +16,11 @@ class Site_User(models.Model):
  #   cart = models.OneToOneField(Shopping_Cart)
 
 class Address(models.Model):
-    pass
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
+    street_address = models.CharField(max_length=100)
+    building_address = models.CharField(max_length=5)
+    apartment_address = models.IntegerField(blank=True, null=True)
+    city = models.ForeignKey(City, on_delete=models.CASCADE)
 
 class User_Address(models.Model):
     user = models.ForeignKey(Site_User, on_delete=models.CASCADE)

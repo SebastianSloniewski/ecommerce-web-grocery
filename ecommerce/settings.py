@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
+    'cities_light',
     #allauth (authentication apps)
     
     'django.contrib.sites',
@@ -149,6 +150,10 @@ AUTHENTICATION_BACKENDS = (
 SITE_ID = 1
 
 
+
+CITIES_LIGHT_TRANSLATION_LANGUAGES = ['pl', 'en']
+CITIES_LIGHT_INCLUDE_COUNTRIES = ['PL']
+CITIES_LIGHT_INCLUDE_CITY_TYPES = ['PPL', 'PPLA', 'PPLA2', 'PPLA3', 'PPLA4', 'PPLC', 'PPLF', 'PPLG', 'PPLL', 'PPLR', 'PPLS', 'STLMT',]
 
 # Static files (CSS, JavaScript, Images)
 
