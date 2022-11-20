@@ -1,7 +1,6 @@
 from django.db import models
 from django.conf import settings
 import operator
-from accounts.models import Site_User
 from products.models import Product
 
 class Cart_Item(models.Model):
@@ -39,3 +38,9 @@ class Shopping_Cart(models.Model):
 
     def get_cart_items(self):
         return self.items.all()
+
+    def items_count(self):
+        total=0
+        for item in self.items.all():
+            total += 1
+        return total

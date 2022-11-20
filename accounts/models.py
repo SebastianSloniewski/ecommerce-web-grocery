@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from cities_light.models import City
+from shopping_cart.models import Shopping_Cart
 #from shopping_cart.models import Shopping_Cart
 
 
@@ -26,6 +27,11 @@ class User_Address(models.Model):
     user = models.ForeignKey(Site_User, on_delete=models.CASCADE)
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
 
+
 class Order(models.Model):
-    user = models.ForeignKey(Site_User, on_delete=models.CASCADE)
+    cart = models.ForeignKey(Shopping_Cart, on_delete=models.CASCADE)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE)
+    ordered_date = models.DateTimeField()
+    phone = models.CharField(max_length=9)
+    email = models.EmailField((""), max_length=254)
     

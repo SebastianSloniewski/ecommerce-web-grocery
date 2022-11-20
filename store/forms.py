@@ -34,6 +34,7 @@ class CheckoutForm(forms.Form):
             'class': 'custom-select w-100',
         })
     )
+    
 
     postal_code = forms.CharField(
         label = "Kod pocztowy",
