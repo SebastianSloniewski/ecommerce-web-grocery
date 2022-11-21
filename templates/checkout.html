@@ -88,7 +88,20 @@
                                 <p>Ulica<span>*</span></p>
                                 {{ form.street_address }}
                             </div>
-                            
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <p>Nr budynku<span>*</span></p>
+                                        {{form.building_address}}
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <p>Nr mieszkania<span></span></p>
+                                        {{form.apartment_address}}
+                                    </div>
+                                </div>
+                            </div>
                             <div class="checkout__input">
                                 <p>Miasto<span>*</span></p>
                                 {{form.city}}
@@ -125,28 +138,25 @@
                         <div class="col-lg-4 col-md-6">
                             <div class="checkout__order">
                                 <h4>Your Order</h4>
-                                <div class="checkout__order__products">Products <span>{{items_count}}</span></div>
+                                <div class="checkout__order__total">Products <span>{{items_count}}</span></div>
                                 <ul>
                                   
                                 </ul>
-                                <div class="checkout__order__subtotal"></div>
                                 <div class="checkout__order__total">Total <span>{{total_price|floatformat:2}}zł</span></div>
                                 <div class="checkout__input__checkbox"></div>
                                 <div class="checkout__input__checkbox">
                                     <label for="payment">
-                                        Check Payment
-                                        <input type="checkbox" id="payment">
-                                        <span class="checkmark"></span>
+                                        <!-- Paymant checkbox placeholder-->
+                                        
                                     </label>
                                 </div>
                                 <div class="checkout__input__checkbox">
                                     <label for="paypal">
-                                        Paypal
-                                        <input type="checkbox" id="paypal">
-                                        <span class="checkmark"></span>
+                                         <!-- Paymant checkbox placeholder-->
+                                        
                                     </label>
                                 </div>
-                                <button type="submit" class="site-btn" >Zamów</button>
+                                <button type="submit" class="site-btn" >Zamów </button>
                             </div>
                         </div>
                     </div>

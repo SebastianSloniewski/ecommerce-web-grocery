@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.views.generic import View
+from django.utils import timezone
 from .forms import CheckoutForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
-from accounts.models import Address
+from accounts.models import Address, Order
 from products.models import *
 from shopping_cart.models import *
 
@@ -44,6 +46,7 @@ class CheckoutView(View):
                 postal_code = form.cleaned_data.get("postal_code")
                 phone_number = form.cleaned_data.get("phone_number")
                 email = form.cleaned_data.get("email")
+                
                 address = Address(
                     user = self.request.user,
                     street_address = street_address,
@@ -53,11 +56,34 @@ class CheckoutView(View):
                     postal_code = postal_code
                 )
                 address.save()
-                return redirect('store:checkout')
+
+                cart.user.first_name = name
+                cart.user.last_name = surname
+                cart.user.email = email
+                cart.ordered = True
+                cart.save()
+
+                order = Order(
+                    address = address, 
+                    phone = phone_number,
+                    cart = cart,
+                    order_date = timezone.now())
+                order.save()
+                
+                return redirect('store:orders-history')
         except ObjectDoesNotExist:
             messages.error(self.request, "Nie posiadasz aktywnego zamówienia")
             return redirect("store:cart-summary")
         
         return redirect('store:checkout')
        
-            
+
+class OrderHistoryView(LoginRequiredMixin, View):
+    def get(self, *args, **kwargs):
+        orders = Order.objects.all().filter(cart__user = self.request.user)
+
+        context = {
+            'orders': orders,
+            'categories': Category.objects.all(),
+        }
+        return render(self.request, "orders.html", context)

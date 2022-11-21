@@ -16,9 +16,11 @@ def cart_item_count(user):
 @register.filter
 def get_cart(user):
     if user.is_authenticated:
-        c = cart.objects.filter(user=user, ordered=False)[0]
-        total = 0
-        for cart_item in c.items.all():
-            total += cart_item.product.price
-        return total
+        qs = cart.objects.filter(user=user, ordered=False)
+        if qs.exists():
+            c=qs[0]
+            total = 0
+            for cart_item in c.items.all():
+                total += cart_item.product.price
+            return "{:.2f}".format(total)
     return 0

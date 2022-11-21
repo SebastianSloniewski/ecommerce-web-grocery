@@ -13,7 +13,7 @@ class Cart_Item(models.Model):
         return f"{self.quantity} of {self.product.product_name}"
 
     def get_total_item_price(self):
-        return self.quantity * self.product.base_price
+        return "{:.2f}".format(self.quantity * self.product.price)
 
         
 
@@ -25,15 +25,11 @@ class Shopping_Cart(models.Model):
     def __str__(self):
       return f'{self.user.username}, {"".join(item.product.product_name for item in self.items.all())}' 
 
-    def save(self, *args, **kwargs):
-        self.items = sorted(self.items, key=operator.attrgetter('product.product_name'))
-        super(Product, self).save(*args, **kwargs) # Call the "real" save() method.
-
 
     def get_total_price(self):
         total = 0
         for cart_item in self.items.all():
-            total += cart_item.product.price
+            total += (cart_item.product.price * cart_item.quantity)
         return total
 
     def get_cart_items(self):
