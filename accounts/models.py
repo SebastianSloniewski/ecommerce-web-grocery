@@ -33,6 +33,7 @@ class User_Address(models.Model):
 
 
 class Order(models.Model):
+<<<<<<< HEAD
     cart = models.ForeignKey(Shopping_Cart, on_delete=models.CASCADE, blank=True, null=True)
     address = models.ForeignKey(Address, on_delete=models.CASCADE, blank = True, null=True)
     order_date = models.DateTimeField(default = timezone.now())
@@ -43,4 +44,11 @@ class Order(models.Model):
         return reverse("store:order-summary", kwargs={
             'id': self.cart.id
         })
+=======
+    cart = models.ForeignKey(Shopping_Cart, on_delete=models.CASCADE, null=True, blank=True)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True, blank=True)
+    ordered_date = models.DateTimeField(null=True, blank=True)
+    phone = models.CharField(max_length=9, default="")
+    email = models.EmailField(default = (""), max_length=254)
+>>>>>>> main
     
