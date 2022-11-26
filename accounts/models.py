@@ -29,9 +29,9 @@ class User_Address(models.Model):
 
 
 class Order(models.Model):
-    cart = models.ForeignKey(Shopping_Cart, on_delete=models.CASCADE)
-    address = models.ForeignKey(Address, on_delete=models.CASCADE)
-    ordered_date = models.DateTimeField()
-    phone = models.CharField(max_length=9)
-    email = models.EmailField((""), max_length=254)
+    cart = models.ForeignKey(Shopping_Cart, on_delete=models.CASCADE, null=True, blank=True)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True, blank=True)
+    ordered_date = models.DateTimeField(null=True, blank=True)
+    phone = models.CharField(max_length=9, default="")
+    email = models.EmailField(default = (""), max_length=254)
     
