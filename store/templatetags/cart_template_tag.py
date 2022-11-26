@@ -21,6 +21,6 @@ def get_cart(user):
             c=qs[0]
             total = 0
             for cart_item in c.items.all():
-                total += cart_item.product.price
+                total += cart_item.product.price * cart_item.quantity
             return "{:.2f}".format(total)
     return 0

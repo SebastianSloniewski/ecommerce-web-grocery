@@ -115,6 +115,7 @@
                         <a href="{% url 'store:shop-grid' %}" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
                     </div>
                 </div>
+                {% if object.ordered == False %}
                 <div class="col-lg-6">
                     <div class="shoping__continue">
                         <div class="shoping__discount">
@@ -130,13 +131,23 @@
                     <div class="shoping__checkout">
                         <h5>Cart Total</h5>
                         <ul>
-                            <li>Total <span>{{ object.get_total_item_price|floatformat:2 }}zł</span></li>
+                            <li>Total <span>{{ object.get_total_price}}zł</span></li>
                         </ul>
                         <a href={% url 'store:checkout' %} class="primary-btn">PROCEED TO CHECKOUT</a>
                     </div>
                 </div>
             </div>
         </div>
+        {% else %}
+        <div class="col-lg-6">
+            <div class="shoping__checkout">
+                <h5>Cart Total</h5>
+                <ul>
+                    <li>Total <span>{{ object.get_total_price}}zł</span></li>
+                </ul>
+            </div>
+        </div>
+        {% endif %}
     </section>
     <!-- Shoping Cart Section End -->
 

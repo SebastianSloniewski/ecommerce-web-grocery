@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponseRedirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -8,7 +7,7 @@ from django.views.generic import View
 import operator
 
 from products.models import Product
-
+from accounts.models import Order
 from shopping_cart.models import Shopping_Cart, Cart_Item
 
 
@@ -17,21 +16,19 @@ class ShoppingCartSummaryView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
         try:
             if kwargs.get('id') is not None:
-                id = kwargs.get('id')
-                cart = Shopping_Cart.objects.get(user=self.request.user, id=id)     
+               id = kwargs.get('id')
+               cart = Shopping_Cart.objects.get(user=self.request.user, id=id)     
             else:
-                cart = Shopping_Cart.objects.get(user=self.request.user, ordered=False)
+               cart = Shopping_Cart.objects.get(user=self.request.user, ordered=False)
             context = {
                 'object': cart
+
             }
             return render(self.request, 'shopping-cart.html', context)
-
         except ObjectDoesNotExist:
             messages.error(self.request, "Nie masz aktywnego koszyka")
             return redirect(self.request.META.get('HTTP_REFERER'))
 
-    def get_ordered_cart(self, *args, **kwargs):
-        return render(self.request, )
         
 
 @login_required
@@ -40,7 +37,6 @@ def add_to_cart(request, slug):
     cart_item, created = Cart_Item.objects.get_or_create(
         product=item,
         user=request.user,
-        quantity = 1,
         ordered=False
     )
     cart_qs = Shopping_Cart.objects.filter(user=request.user, ordered=False)
@@ -60,7 +56,7 @@ def add_to_cart(request, slug):
         cart = Shopping_Cart.objects.create(user = request.user)
         cart.items.add(cart_item)
         messages.info(request, "nowy koszyk")
-        return redirect("store:cart-summary")
+        return redirect("store:cart:summary")
 
 
 @login_required
@@ -120,5 +116,3 @@ def remove_single_item(request,slug):
     else:
         messages.info(request, "Nie posiadasz aktywnego koszyka")
         return redirect("store:product-details", slug=slug)
-
-

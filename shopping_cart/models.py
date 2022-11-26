@@ -30,7 +30,7 @@ class Shopping_Cart(models.Model):
         total = 0
         for cart_item in self.items.all():
             total += (cart_item.product.price * cart_item.quantity)
-        return total
+        return "{:.2f}".format(total)
 
     def get_cart_items(self):
         return self.items.all()
