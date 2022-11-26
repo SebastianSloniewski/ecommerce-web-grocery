@@ -37,6 +37,7 @@ def add_to_cart(request, slug):
     cart_item, created = Cart_Item.objects.get_or_create(
         product=item,
         user=request.user,
+        quantity=1,
         ordered=False
     )
     cart_qs = Shopping_Cart.objects.filter(user=request.user, ordered=False)
@@ -56,7 +57,7 @@ def add_to_cart(request, slug):
         cart = Shopping_Cart.objects.create(user = request.user)
         cart.items.add(cart_item)
         messages.info(request, "nowy koszyk")
-        return redirect("store:cart:summary")
+        return redirect("store:cart-summary")
 
 
 @login_required
