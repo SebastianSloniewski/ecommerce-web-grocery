@@ -5,6 +5,7 @@ from django.shortcuts import reverse
 
 # Create your models here.
 class Category(models.Model):
+    category_image = models.ImageField()
     parent_category = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     category_name = models.CharField(max_length = 50)
 
@@ -23,6 +24,7 @@ class Product(models.Model):
     discount = models.IntegerField(default=0)
     price = models.FloatField(default = base_price, blank=True) 
     slug = models.SlugField(blank = True, null = True)
+    featured = models.BooleanField(default=False)
 
     def __str__(self):
         return self.product_name
@@ -47,3 +49,5 @@ class Product(models.Model):
         return reverse("store:remove-from-cart", kwargs={
             'slug': self.slug
         })
+    def get_price(self):
+        return "{:.2f}".format(self.price)

@@ -29,7 +29,7 @@ class ProductDetailView(generic.DetailView):
 
 def shop_view(request):
 
-    paginate_by = 16
+    paginate_by = 15
     products = Product.objects.all()
 
     data = {

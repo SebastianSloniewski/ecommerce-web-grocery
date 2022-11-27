@@ -15,6 +15,7 @@ from shopping_cart.models import *
 def index_view(request):
     context = {
             'categories': Category.objects.all(),
+            'featured' : Product.objects.filter(featured=True)
         }
 
     return render(request, "index.html", context)

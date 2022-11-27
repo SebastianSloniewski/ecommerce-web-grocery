@@ -13,13 +13,7 @@
      </div>
      <div class="humberger__menu__widget">
          <div class="header__top__right__language">
-             <img src="img/language.png" alt="">
-             <div>English</div>
-             <span class="arrow_carrot-down"></span>
-             <ul>
-                 <li><a href="#">Spanis</a></li>
-                 <li><a href="#">English</a></li>
-             </ul>
+             
          </div>
          {% if request.user.is_authenticated %}
          <div class="header__top__right__auth">
@@ -40,10 +34,13 @@
      <nav class="humberger__menu__nav mobile-menu">
          <ul>
             <ul>
-                <li class="active"><a href="{% url 'store:index' %}">Home</a></li>
-                <li><a href="{% url 'store:shop-grid' %}">Shop</a></li>
-                <li><a href="#">Discount coupons</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="{% url 'store:index' %}" class="home-btn">Home</a></li>
+                        <li><a href="{% url 'store:shop-grid' %}"class="home-btn">Shop</a></li>
+                        <li><a href="#"class="home-btn">Coupons</a></li>
+                        <li><a href="#"class="home-btn">Contact</a></li>
+                        {% if request.user.is_authenticated %}
+                            <li><a href={% url 'store:orders-history' %} class="home-btn">Orders</a></li>
+                        {% endif %}
             </ul>
          </ul>
      </nav>
