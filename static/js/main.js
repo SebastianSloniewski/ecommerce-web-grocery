@@ -132,6 +132,7 @@
         dots: true,
         smartSpeed: 1200,
         autoHeight: false,
+        autoWidth: false,
         autoplay: true,
         responsive: {
 

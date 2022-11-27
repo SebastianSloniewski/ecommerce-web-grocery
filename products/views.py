@@ -51,7 +51,8 @@ def shop_view(request):
     context = {
             'products': products,
             'categories': sorted(Category.objects.all(), key=operator.attrgetter('category_name')),
-            'page_items': page_obj
+            'page_items': page_obj,
+            'discount_items': products.filter(discount__gt=0)
         }
 
     return render(request, "shop-grid.html", context)
