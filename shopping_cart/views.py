@@ -15,14 +15,18 @@ class ShoppingCartSummaryView(LoginRequiredMixin, View):
 
     def get(self, *args, **kwargs):
         try:
+            address = None
             if kwargs.get('id') is not None:
                id = kwargs.get('id')
-               cart = Shopping_Cart.objects.get(user=self.request.user, id=id)     
+               order = Order.objects.get(cart__user=self.request.user, cart__id=id)
+               cart = order.cart
+               address = order.address
             else:
                cart = Shopping_Cart.objects.get(user=self.request.user, ordered=False)
-            context = {
-                'object': cart
 
+            context = {
+                'object': cart,
+                'address': address
             }
             return render(self.request, 'shopping-cart.html', context)
         except ObjectDoesNotExist:

@@ -111,19 +111,16 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
+                {% if object.ordered == False %}
                     <div class="shoping__cart__btns">
                         <a href="{% url 'store:shop-grid' %}" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
                     </div>
                 </div>
-                {% if object.ordered == False %}
+                
                 <div class="col-lg-6">
                     <div class="shoping__continue">
                         <div class="shoping__discount">
-                            <h5>Discount Codes</h5>
-                            <form action="#">
-                                <input type="text" placeholder="Enter your coupon code">
-                                <button type="submit" class="site-btn">APPLY COUPON</button>
-                            </form>
+                            
                         </div>
                     </div>
                 </div>
@@ -139,12 +136,26 @@
             </div>
         </div>
         {% else %}
-        <div class="col-lg-6">
-            <div class="shoping__checkout">
-                <h5>Cart Total</h5>
-                <ul>
-                    <li>Total <span>{{ object.get_total_price}}zł</span></li>
-                </ul>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="shoping__checkout">
+                    <h5 >Adres</h5>
+                    <ul>
+                        <li>Ulica: <span style="color: black;">{{address.street_address}}</span></li>
+                        <li>Nr budynku: <span style="color: black;">{{address.building_address}}</span></li>
+                        <li>Nr mieszkania: <span style="color: black;">{{address.apartment_address}}</span></li>
+                        <li>Miasto: <span style="color: black;">{{address.city.name}}</span></li>
+                        <li>Kod pocztowy: <span style="color: black;">{{address.postal_code}}</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="shoping__checkout">
+                    <h5>Cart Total</h5>
+                    <ul>
+                        <li>Total <span>{{ object.get_total_price}}zł</span></li>
+                    </ul>
+                </div>
             </div>
         </div>
         {% endif %}
