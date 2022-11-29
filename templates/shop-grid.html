@@ -62,6 +62,7 @@
                         <div class="sidebar__item">
                             <h4>Kategorie</h4>
                             <ul>
+                                    <li><a href = "{% url 'store:shop-grid' %}"><p>Wszystkie</p></li>
                                 {% for item in  categories%}
                                     <li><a href ="{% url 'store:shop-grid' %}?category={{ item.id }}"> <p>{{ item.category_name }}</p></li>
                                 {% endfor %}

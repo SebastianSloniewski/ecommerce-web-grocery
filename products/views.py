@@ -18,9 +18,11 @@ class ProductDetailView(generic.DetailView):
         product = Product.objects.filter(slug=kwargs['slug']).first()
         product_category_id = product.category.id
         category_items = Product.objects.filter(category__id=product_category_id).exclude(id=product.id)
+        categories = Category.objects.all()
         context={
             'product': product,
-            'items': category_items
+            'items': category_items,
+            'categories' : categories
         }
         response = HttpResponse(context)
         return render(request, self.template_name, context)

@@ -31,6 +31,9 @@ class CheckoutView(View):
             'total_price': total_price,
             'items_count': total_items
         }
+        if total_items == 0:
+            messages.info(self.request, "Twój koszyk jest pusty")
+            return redirect("store:cart-summary")
         return render(self.request, "checkout.html", context)
 
     def post(self, *args, **kwargs):

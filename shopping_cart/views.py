@@ -30,8 +30,9 @@ class ShoppingCartSummaryView(LoginRequiredMixin, View):
             }
             return render(self.request, 'shopping-cart.html', context)
         except ObjectDoesNotExist:
-            messages.error(self.request, "Nie masz aktywnego koszyka")
-            return redirect(self.request.META.get('HTTP_REFERER'))
+            cart = Shopping_Cart.objects.create(user = self.request.user)
+            messages.error(self.request, "Utworzono nowy koszyk")
+            return redirect("store:cart-summary")
 
         
 
@@ -51,11 +52,11 @@ def add_to_cart(request, slug):
         if cart.items.filter(product__slug = item.slug).exists():
             cart_item.quantity = cart_item.quantity + 1
             cart_item.save()
-            messages.info(request, "This item quantity was updated.")
+            messages.info(request, "Pomyślnie zwiększono ilość sztuk produktu.")
             return redirect("store:cart-summary")
         else:
             cart.items.add(cart_item)
-            messages.info(request, "This item was added to your cart.")
+            messages.info(request, "Produkt został dodany do koszyka.")
             return redirect("store:cart-summary")
     else:
         cart = Shopping_Cart.objects.create(user = request.user)
@@ -81,15 +82,15 @@ def remove_from_cart(request, slug):
             )[0]
             cart.items.remove(cart_item)
             cart_item.delete()
-            messages.info(request, "This item was removed from your cart.")
+            messages.info(request, "Produkt został usunięty z twojego koszyka.")
             return redirect("store:cart-summary")
 
         else:
-            messages.info(request, "This item was not in your cart")
+            messages.info(request, "Produkt nie znajdował się w twoim koszyku")
             return redirect("store:product-details",slug=slug)
         
     else:
-        messages.info(request, "You do not have an active order")
+        messages.info(request, "Nie posiadasz aktywnego koszyka.")
         return redirect("store:product-details",slug=slug)
 
 
