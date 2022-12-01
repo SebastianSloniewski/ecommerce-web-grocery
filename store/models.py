@@ -22,8 +22,8 @@ class Product(models.Model):
     product_image = models.ImageField()
     base_price = models.FloatField()
     discount = models.IntegerField(default=0)
-    price = models.FloatField(default = base_price, blank=True) 
-    slug = models.SlugField(blank = True, null = True)
+    price = models.FloatField(default = base_price) 
+    slug = models.SlugField(default = product_name)
     featured = models.BooleanField(default=False)
 
     def __str__(self):
@@ -54,8 +54,7 @@ class Product(models.Model):
 
 
 class Cart_Item(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null = True)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE,  blank=True, null = True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(default = 1)
     ordered = models.BooleanField(default=False)
 
@@ -91,17 +90,6 @@ class Shopping_Cart(models.Model):
             total += 1
         return total
 
-class Site_User(models.Model):
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null = True)
-    stripe_customer_id = models.CharField(max_length=50, blank=True, null=True)
-    one_click_purchasing = models.BooleanField(default=False)
-    
-
-    def __str__(self):
-        return self.user.username
- #   cart = models.OneToOneField(Shopping_Cart)
-
 class Address(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     street_address = models.CharField(max_length=100)
@@ -110,13 +98,9 @@ class Address(models.Model):
     city = models.ForeignKey(City, on_delete=models.CASCADE)
     postal_code = models.CharField(max_length=10)
 
-class User_Address(models.Model):
-    user = models.ForeignKey(Site_User, on_delete=models.CASCADE)
-    address = models.ForeignKey(Address, on_delete=models.CASCADE)
-
 
 class Order(models.Model):
-    cart = models.ForeignKey(Shopping_Cart, on_delete=models.CASCADE, blank=True, null=True)
+    cart = models.OneToOneField(Shopping_Cart, on_delete=models.CASCADE, blank=True, null=True)
     address = models.ForeignKey(Address, on_delete=models.CASCADE, blank = True, null=True)
     order_date = models.DateTimeField(default = timezone.now())
     phone = models.CharField(max_length=9)
@@ -126,17 +110,3 @@ class Order(models.Model):
         return reverse("store:order-summary", kwargs={
             'id': self.cart.id
         })
-
-    
-
-
-
-
-
-
-
-
-
-
-
-

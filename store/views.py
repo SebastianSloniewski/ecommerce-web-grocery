@@ -98,34 +98,35 @@ class ShoppingCartSummaryView(LoginRequiredMixin, View):
 
     def get(self, *args, **kwargs):
         try:
-            address = None
-            if kwargs.get('id') is not None:
-               id = kwargs.get('id')
-               order = Order.objects.get(cart__user=self.request.user, cart__id=id)
-               cart = order.cart
-               address = order.address
-            else:
-               cart = Shopping_Cart.objects.get(user=self.request.user, ordered=False)
+            cart = Shopping_Cart.objects.get(user=self.request.user, ordered=False)
 
             context = {
-                'object': cart,
-                'address': address
+                'object': cart
             }
             return render(self.request, 'shopping-cart.html', context)
+
         except ObjectDoesNotExist:
             cart = Shopping_Cart.objects.create(user = self.request.user)
-            messages.error(self.request, "Utworzono nowy koszyk", extra_tags="danger")
+            messages.info(self.request, "Utworzono nowy koszyk", extra_tags="danger")
             return redirect("store:cart-summary")
 
-        
+class OrderSummaryView(LoginRequiredMixin, View):
+    def get(self, *args, **kwargs):
+        id = kwargs.get('id')
+        order = Order.objects.get(cart__user=self.request.user, cart__id=id)
+        cart = order.cart
+        address = order.address
+        context = {
+            'object': cart,
+            'address': address
+        }
+        return render(self.request, 'shopping-cart.html', context)
 
 @login_required
 def add_to_cart(request, slug):
     item = get_object_or_404(Product, slug=slug)
     cart_item, created = Cart_Item.objects.get_or_create(
         product=item,
-        user=request.user,
-        quantity=1,
         ordered=False
     )
     cart_qs = Shopping_Cart.objects.filter(user=request.user, ordered=False)
@@ -160,7 +161,6 @@ def remove_from_cart(request, slug):
         if cart.items.filter(product__slug = item.slug).exists():
             cart_item = Cart_Item.objects.filter(
                 product=item,
-                user=request.user,
                 ordered=False
             )[0]
             cart.items.remove(cart_item)
@@ -189,7 +189,6 @@ def remove_single_item(request,slug):
         if cart.items.filter(product__slug=item.slug).exists():
             cart_item = Cart_Item.objects.filter(
                 product = item,
-                user = request.user,
                 ordered = False
             )[0]
             if cart_item.quantity > 1:
@@ -256,4 +255,3 @@ def shop_view(request):
         }
 
     return render(request, "shop-grid.html", context)
-
