@@ -1,17 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from django.views.generic import View, generic
+from django.views.generic import View
+from django.views import generic
 from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+import operator
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
 from .forms import CheckoutForm
-from accounts.models import Address, Order
-from products.models import *
-from shopping_cart.models import *
-
+from .models import *
 
 # Create your views here.
 def index_view(request):

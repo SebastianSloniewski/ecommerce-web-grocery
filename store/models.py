@@ -3,7 +3,6 @@ from django.conf import settings
 from django.shortcuts import reverse
 from django.utils import timezone
 from cities_light.models import City
-from products.models import Product
 
 class Category(models.Model):
     category_image = models.ImageField()

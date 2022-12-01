@@ -33,10 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'shopping_cart.apps.ShoppingCartConfig',
-    'accounts.apps.AccountsConfig',
     'store.apps.StoreConfig',
-    'products.apps.ProductsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -103,7 +100,7 @@ MESSAGE_TAGS = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME' : 'store',
+        'NAME' : 'ecommerce',
 
     }
 }

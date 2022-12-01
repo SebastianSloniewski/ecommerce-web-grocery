@@ -2,21 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from django.urls import path
-from products.views import(
-    shop_view, 
-    ProductDetailView
-)
-from shopping_cart.views import(
-    ShoppingCartSummaryView,
-    remove_single_item,
-    add_to_cart, 
-    remove_from_cart, 
-) 
-from .views import(
-    index_view,
-    CheckoutView,
-    OrderHistoryView
-)
+from .views import *
 
 app_name = 'store'
 
