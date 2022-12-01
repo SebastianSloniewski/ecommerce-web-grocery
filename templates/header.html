@@ -1,6 +1,7 @@
 
  {% load static %}
  {% load cart_template_tag %}
+ 
  <!-- Header Section Begin -->
  <header class="header">
     <div class="header__top">
@@ -34,16 +35,16 @@
             </div>
         </div>
     </div>
-    {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-danger alert-primary alert-dismissible fade show" role="alert">
-          {{ message }}
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+    {% for message in messages %}
+        <div class="container-fluid p-0">
+            <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="True">&times;</span>
+                </button>
+                {{ message }}
+            </div>
         </div>
-        {% endfor %}
-    {% endif %}
+    {% endfor %}
     <div class="container">
         <div class="row">
             <div class="col-lg-3">

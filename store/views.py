@@ -32,7 +32,7 @@ class CheckoutView(View):
             'items_count': total_items
         }
         if total_items == 0:
-            messages.info(self.request, "Twój koszyk jest pusty")
+            messages.error(self.request, "Twój koszyk jest pusty")
             return redirect("store:cart-summary")
         return render(self.request, "checkout.html", context)
 

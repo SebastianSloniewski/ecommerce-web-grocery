@@ -31,7 +31,7 @@ class ShoppingCartSummaryView(LoginRequiredMixin, View):
             return render(self.request, 'shopping-cart.html', context)
         except ObjectDoesNotExist:
             cart = Shopping_Cart.objects.create(user = self.request.user)
-            messages.error(self.request, "Utworzono nowy koszyk")
+            messages.error(self.request, "Utworzono nowy koszyk", extra_tags="danger")
             return redirect("store:cart-summary")
 
         
