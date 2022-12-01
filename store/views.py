@@ -1,11 +1,13 @@
-from django.shortcuts import render
-from django.shortcuts import redirect
-from django.views.generic import View
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
+from django.views.generic import View, generic
 from django.utils import timezone
-from .forms import CheckoutForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import Paginator
+from .forms import CheckoutForm
 from accounts.models import Address, Order
 from products.models import *
 from shopping_cart.models import *
@@ -91,3 +93,168 @@ class OrderHistoryView(LoginRequiredMixin, View):
             'categories': Category.objects.all(),
         }
         return render(self.request, "orders.html", context)
+
+
+class ShoppingCartSummaryView(LoginRequiredMixin, View):
+
+    def get(self, *args, **kwargs):
+        try:
+            address = None
+            if kwargs.get('id') is not None:
+               id = kwargs.get('id')
+               order = Order.objects.get(cart__user=self.request.user, cart__id=id)
+               cart = order.cart
+               address = order.address
+            else:
+               cart = Shopping_Cart.objects.get(user=self.request.user, ordered=False)
+
+            context = {
+                'object': cart,
+                'address': address
+            }
+            return render(self.request, 'shopping-cart.html', context)
+        except ObjectDoesNotExist:
+            cart = Shopping_Cart.objects.create(user = self.request.user)
+            messages.error(self.request, "Utworzono nowy koszyk", extra_tags="danger")
+            return redirect("store:cart-summary")
+
+        
+
+@login_required
+def add_to_cart(request, slug):
+    item = get_object_or_404(Product, slug=slug)
+    cart_item, created = Cart_Item.objects.get_or_create(
+        product=item,
+        user=request.user,
+        quantity=1,
+        ordered=False
+    )
+    cart_qs = Shopping_Cart.objects.filter(user=request.user, ordered=False)
+    if cart_qs.exists():
+        cart = cart_qs[0]
+        #check if the order product is already in the cart
+        if cart.items.filter(product__slug = item.slug).exists():
+            cart_item.quantity = cart_item.quantity + 1
+            cart_item.save()
+            messages.info(request, "Pomyślnie zwiększono ilość sztuk produktu.")
+            return redirect("store:cart-summary")
+        else:
+            cart.items.add(cart_item)
+            messages.info(request, "Produkt został dodany do koszyka.")
+            return redirect("store:cart-summary")
+    else:
+        cart = Shopping_Cart.objects.create(user = request.user)
+        cart.items.add(cart_item)
+        messages.info(request, "nowy koszyk")
+        return redirect("store:cart-summary")
+
+
+@login_required
+def remove_from_cart(request, slug):
+    
+    item = get_object_or_404(Product, slug=slug)
+    cart_qs = Shopping_Cart.objects.filter(user=request.user, ordered=False)
+    
+    if cart_qs.exists():
+        cart = cart_qs[0]
+        #check if the order product is already in the cart
+        if cart.items.filter(product__slug = item.slug).exists():
+            cart_item = Cart_Item.objects.filter(
+                product=item,
+                user=request.user,
+                ordered=False
+            )[0]
+            cart.items.remove(cart_item)
+            cart_item.delete()
+            messages.info(request, "Produkt został usunięty z twojego koszyka.")
+            return redirect("store:cart-summary")
+
+        else:
+            messages.info(request, "Produkt nie znajdował się w twoim koszyku")
+            return redirect("store:product-details",slug=slug)
+        
+    else:
+        messages.info(request, "Nie posiadasz aktywnego koszyka.")
+        return redirect("store:product-details",slug=slug)
+
+
+@login_required
+def remove_single_item(request,slug):
+    item = get_object_or_404(Product, slug=slug)
+    cart_qs = Shopping_Cart.objects.filter(
+        user=request.user,
+        ordered=False
+    )
+    if cart_qs.exists():
+        cart = cart_qs[0]
+        if cart.items.filter(product__slug=item.slug).exists():
+            cart_item = Cart_Item.objects.filter(
+                product = item,
+                user = request.user,
+                ordered = False
+            )[0]
+            if cart_item.quantity > 1:
+                cart_item.quantity -= 1
+                cart_item.save()
+            else:
+                cart.items.remove(cart_item)
+            messages.info(request, "Zaktualizowano")
+            return redirect("store:cart-summary")
+        else:
+            messages.info(request, "Produkt nie znajfdował sie w koszyku")
+            return redirect("store:product-details", slug=slug)
+    else:
+        messages.info(request, "Nie posiadasz aktywnego koszyka")
+        return redirect("store:product-details", slug=slug)
+
+
+class ProductDetailView(generic.DetailView):
+    model = Product
+    template_name = "shop-details.html"
+
+
+    def get(self, request, *args, **kwargs):
+        product = Product.objects.filter(slug=kwargs['slug']).first()
+        product_category_id = product.category.id
+        category_items = Product.objects.filter(category__id=product_category_id).exclude(id=product.id)
+        categories = Category.objects.all()
+        context={
+            'product': product,
+            'items': category_items,
+            'categories' : categories
+        }
+        response = HttpResponse(context)
+        return render(request, self.template_name, context)
+
+
+
+def shop_view(request):
+
+    paginate_by = 15
+    products = Product.objects.all()
+
+    data = {
+        'category':request.GET.get('category'),
+        'page_number': request.GET.get('page') 
+    }
+    data = {k: v for k, v in data.items() if v}
+    print(data)
+    if "category" in data:
+        products = Product.objects.filter(category_id=data['category'])
+
+    paginator = Paginator(products, paginate_by)
+    page_obj = paginator.get_page(1)
+    
+    if "page_number" in data:
+        page_obj = paginator.get_page(data['page_number'])
+    
+    
+    context = {
+            'products': products,
+            'categories': sorted(Category.objects.all(), key=operator.attrgetter('category_name')),
+            'page_items': page_obj,
+            'discount_items': products.filter(discount__gt=0)
+        }
+
+    return render(request, "shop-grid.html", context)
+
