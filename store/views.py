@@ -62,15 +62,13 @@ class CheckoutView(View):
                 )
                 address.save()
 
-                cart.user.first_name = name
-                cart.user.last_name = surname
-                cart.user.email = email
                 cart.ordered = True
                 cart.save()
 
                 order = Order(
                     address = address, 
                     phone = phone_number,
+                    email = email,
                     cart = cart,
                     order_date = timezone.now())
                 order.save()
