@@ -2,21 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from django.urls import path
-from products.views import(
-    shop_view, 
-    ProductDetailView
-)
-from shopping_cart.views import(
-    ShoppingCartSummaryView,
-    remove_single_item,
-    add_to_cart, 
-    remove_from_cart, 
-) 
-from .views import(
-    index_view,
-    CheckoutView,
-    OrderHistoryView
-)
+from .views import *
 
 app_name = 'store'
 
@@ -27,7 +13,7 @@ urlpatterns = [
  path('add-to-cart/<slug:slug>/', add_to_cart, name='add-to-cart'),
  path('remove-from-cart/<slug:slug>/', remove_from_cart, name='remove-from-cart'),
  path('cart-summary/', ShoppingCartSummaryView.as_view(), name='cart-summary'),
- path('order-summary/<int:id>/', ShoppingCartSummaryView.as_view(), name="order-summary"),
+ path('order-summary/<int:id>/', OrderSummaryView.as_view(), name="order-summary"),
  path('remove-item-from-cart/<slug>', remove_single_item, name="remove-single-item"),
  path('checkout/', CheckoutView.as_view(),name='checkout'),
  path('orders-history/', OrderHistoryView.as_view(), name='orders-history')

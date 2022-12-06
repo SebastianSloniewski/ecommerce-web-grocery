@@ -1,6 +1,5 @@
 from django import forms
 from cities_light.models import City
-from django_select2 import forms as s2forms
 
 
 class CheckoutForm(forms.Form):
