@@ -56,7 +56,7 @@ class Product(models.Model):
 class Cart_Item(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(default = 1)
-    ordered = models.BooleanField(default=False)
+
 
     def __str__(self):
         return f"{self.quantity} of {self.product.product_name}"
@@ -67,7 +67,7 @@ class Cart_Item(models.Model):
         
 
 class Shopping_Cart(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
     items = models.ManyToManyField(Cart_Item)
     ordered = models.BooleanField(default=False)
     
@@ -100,11 +100,11 @@ class Address(models.Model):
 
 
 class Order(models.Model):
-    cart = models.OneToOneField(Shopping_Cart, on_delete=models.CASCADE, blank=True, null=True)
-    address = models.ForeignKey(Address, on_delete=models.CASCADE, blank = True, null=True)
+    cart = models.OneToOneField(Shopping_Cart, on_delete=models.CASCADE)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE)
     order_date = models.DateTimeField(default = timezone.now())
     phone = models.CharField(max_length=9)
-    email = models.EmailField((""), max_length=254, blank=True)
+    email = models.EmailField((""), max_length=255, blank=True)
 
     def get_absolute_url(self):
         return reverse("store:order-summary", kwargs={
